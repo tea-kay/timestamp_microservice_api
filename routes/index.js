@@ -10,7 +10,7 @@ router.get('/:time', function(req, res) {
 
   function unixToNatural(unix) {
     var date = new Date(unix * 1000);
-    var months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+    var months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     var month = months[date.getMonth()];
     var day = date.getDate();
@@ -23,6 +23,15 @@ router.get('/:time', function(req, res) {
     var result = unixToNatural(req.params.time);
     var data = { unix: req.params.time, natural: result };
     res.json(data);
+  } else {
+    var natural = new Date(req.params.time);
+    if(!isNaN(natural)) {
+      var unix = natural / 1000;
+      var data = { unix: unix, natural: req.params.time };
+      res.json(data);
+    } else {
+      res.json({ unix: null, natural: null })
+    }
   }
 });
 
